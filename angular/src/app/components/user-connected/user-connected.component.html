@@ -1,0 +1,22 @@
+
+
+  <div *ngIf="userConnected.mail != ''" id="userInfo">
+    <span id="userInfoText"> {{userConnected.givenName}} {{userConnected.name}} </span>
+    <button mat-icon-button id="settings-button" [matMenuTriggerFor]="menu">
+      <img src="assets/images/settings_2.svg" id="settings-icon" alt="settings" />
+    </button>
+
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <button mat-menu-item (click)="onSubmit()">
+        <mat-icon class="myIcon2">reply</mat-icon>
+        Déconnexion
+      </button>
+    </mat-menu>
+
+    <div class="help-container">
+        <button mat-icon-button [routerLink]="['/comment','app']">
+          <mat-icon class="myIcon">comment</mat-icon>
+        </button>
+      </div>
+  </div>
+

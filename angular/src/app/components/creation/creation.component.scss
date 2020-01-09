@@ -1,0 +1,188 @@
+#main-component-container {
+    display: flex;
+    flex-direction:column;
+    padding-right: 2%;
+    padding-left: 2%;
+
+}
+
+#nomenclatures, #trames, #indicators {
+    display: flex;
+    width:100%;
+    // height:70vh;
+}
+
+.indicators-body-card,  .trames-body-card,  .nomenclatures-body-card  {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    height:99%;
+}
+.indicators-filter-card, .nomenclatures-filter-card, .trames-filter-card {
+    display: flex;
+    flex-direction: column;
+    height:99%;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-right: 0.3%;
+    width:24%;
+    min-height: 72vh;
+    height: 72vh;
+    > .mat-card-title-group {
+        display: block;
+      }
+  > .mat-card-content {
+          overflow-y: auto;
+      }
+}
+
+.left-column-frame-indicator{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-right: 0.3%;
+    width:24%;
+    height:100%;
+
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-right: 0.3%;
+    width:76%;
+    // min-height: 67vh;
+    // height: 100%;
+
+}
+
+/* /deep/ Permet de sélélctionner les éléments générés par les composants angular, qui on leur propre DOM. */
+/deep/ .left-column .mat-pseudo-checkbox {
+    visibility: hidden;
+}
+
+/deep/ .frame-detail-indicator-column .mat-pseudo-checkbox {
+    visibility: hidden;
+}
+
+
+.filter {
+    width: 100%;
+}
+
+.nomenclature-row{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:100%;
+    white-space: pre;
+    overflow : hidden;
+}
+
+.nomenclature-row2{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width:100%;
+}
+
+.labels {
+
+    display: flex;
+    justify-content: right;
+    // align-items: center;
+}
+
+.frame-detail{
+    display: flex;
+    flex-direction: column;
+    // max-height: 500px;
+    width:30%;
+}
+
+.frame-indicator-detail{
+    display: flex;
+    width: 70%;
+    max-height: 565px;
+    min-height: 565px;
+}
+
+.frame-detail-column{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    // width: 50%;
+    box-sizing: border-box;
+    border: solid rgba(170, 167, 167, 0.295) 1px;
+}
+#frame-detail-column-etab{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 200px;
+    box-sizing: border-box;
+    border: solid rgba(170, 167, 167, 0.295) 1px;
+}
+.frame-detail-indicator-column{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 40%;
+    box-sizing: border-box;
+    border: solid rgba(170, 167, 167, 0.295) 1px;
+
+}
+
+.frame-detail-indicator-column-right{
+
+    width: 59%;
+    box-sizing: border-box;
+    border: solid rgba(170, 167, 167, 0.295) 1px;
+}
+
+
+#appIndicatorCreation {
+    height: 100%;
+}
+
+#loadingScreen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background-color: rgba(244, 244, 244, 0.6);
+    display: flex;
+    justify-content: center;
+}
+.mat-select-panel mat-option.mat-option {
+  height: unset;
+}
+
+.mat-option-text.mat-option-text {
+  white-space: normal;
+}
+
+.mat-tab {
+  min-width:450px !important;
+}
+
+span{
+  white-space: pre;
+  overflow : hidden;
+}
+
+.no-result-text {
+  font-style: italic;
+  color: #4e555b;
+  font-size: 1.3em;
+  opacity: 0.8;
+}

@@ -1,0 +1,59 @@
+#creationForm {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#parameterForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#infosForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#lowerForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#lowerForm mat-form-field {
+  margin-right: 2em;
+}
+
+#lowerForm button {
+  margin-left: 1em;
+}
+
+#listOfParameters {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+h5 {
+  margin-top: 2em;
+}
+
+mat-card-actions {
+  text-align: right;
+}
+
+.parametersDisplay {
+  display: flex;
+  justify-content: space-between;
+}
+
+#parameters mat-card {
+  margin-top: 1.2em;
+}
+
+td {
+  max-width: 20vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

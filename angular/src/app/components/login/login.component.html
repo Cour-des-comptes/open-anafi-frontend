@@ -1,0 +1,31 @@
+
+<div class="container-fluid" id="main-component-container">
+        <mat-card>
+            <form [formGroup]="loginForm" class="loginForm" >
+                <legend>Connexion</legend>
+                <mat-card-content class="loginForm">
+                    <mat-form-field>
+                        <input matInput placeholder="Identifiant" [formControl]="username" required  />
+
+                    <mat-error *ngIf="username.invalid"></mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput [type]="showPassword.checked ? 'text' : 'password'" placeholder="Mot de passe" [formControl]="password" required />
+
+                    <mat-error *ngIf="username.invalid"></mat-error>
+                    </mat-form-field>
+                    <mat-checkbox #showPassword>Afficher le mot de passe</mat-checkbox>
+                </mat-card-content>
+
+                <div class="buttonForm">
+                    <button mat-raised-button  *ngIf="!loading" (click)="onSubmit()" [disabled]="loginForm.invalid || loading">Se connecter</button>
+
+                    <div *ngIf="loading" id="loading">
+                        <mat-spinner [diameter]="diameter"></mat-spinner>
+                    </div>
+                </div>
+            </form>
+
+        </mat-card>
+</div>

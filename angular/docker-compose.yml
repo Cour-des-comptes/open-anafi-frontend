@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+
+  example:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/angular'
+      - '/angular/node_modules'
+    ports:
+      - '4201:4200'
+    command: bash -c "npm i typescript@3.2.4 --save-dev --save-exact; ng serve --host 0.0.0.0  --configuration=arthtest"
+    environment:
+      - CHOKIDAR_USEPOLLING=true

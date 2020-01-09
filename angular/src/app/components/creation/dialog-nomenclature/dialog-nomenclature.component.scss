@@ -1,0 +1,39 @@
+#button-container1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+   }
+
+   #form-container {
+    display: flex;
+    //padding-top:10px;
+    flex-direction:column;
+    //flex-wrap: wrap;
+    justify-content: center;
+     min-width: 400px;
+     width: 100%;
+}
+#uploadInput{
+    width: 90%;
+}
+#button_add{
+    margin-top: auto;
+    margin-bottom: auto;
+   }
+
+.container-upload-tools{
+    display:flex;
+    flex-direction: row;
+}
+
+.control-form {
+    width: 100%;
+   // margin-top: 22px;
+}
+
+.loading {
+display: flex;
+
+
+}

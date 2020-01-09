@@ -1,0 +1,47 @@
+<form [formGroup]="FrameIndicatorForm" id="form-container">
+  <div>
+    <mat-card-title> Ajouter des indicateurs à la trame</mat-card-title>
+  </div>
+
+      <mat-form-field class="filter">
+          <input matInput placeholder="Recherche" (keyup)="filterIndicators(indicatorFrameFilter.value)"
+            #indicatorFrameFilter>
+        </mat-form-field>
+
+        <div *ngIf="loading" id="loading">
+            <mat-spinner [diameter]="diameter"></mat-spinner>
+          </div>
+
+    <div class="control-form">
+    <perfect-scrollbar>
+      <mat-selection-list [formControl]="indicatorControl">
+        <mat-list-option *ngFor="let indicator of indicators " [value]="indicator" [matTooltip]="indicator.libelles[0] ? indicator.name + ' - ' + indicator.libelles[0].libelle : indicator.name">
+          <div class="nomenclature-row">
+            <b>{{indicator.name}}</b>
+          </div>
+          <div *ngIf="indicator.libelles[0]" class="nomenclature-row" >{{indicator.libelles[0].libelle}}</div>
+        </mat-list-option>
+      </mat-selection-list>
+    </perfect-scrollbar>
+  </div>
+
+
+
+  <div id="button-container1">
+
+    <div>
+      <button id="button_create" [mat-dialog-close]="done" mat-raised-button (click)="submit()">
+        Ajouter des indicateurs à la trame</button>
+    </div>
+
+    <div *ngIf="!data && loading" class="loading">
+      <mat-spinner [diameter]="diameter"></mat-spinner>
+      Création en cours...
+    </div>
+
+    <div *ngIf=" !loading">
+      <button mat-button [mat-dialog-close]="true">Annuler</button>
+    </div>
+
+  </div>
+</form>

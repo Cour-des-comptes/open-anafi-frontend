@@ -1,0 +1,43 @@
+/* AppComponent's private CSS styles */
+h1 {
+  font-size: 1em;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+#userInfo {
+  display: flex;
+  flex-direction: row;
+}
+
+#userInfoText {
+  font-size: 0.85em;
+  color: #FFFFFF;
+  margin-top: 5px;
+}
+
+#settings-icon {
+  width: 15px;
+  transition: 0.4s ease-in-out;
+}
+
+#settings-button:hover #settings-icon {
+  transform: rotate(90deg);
+}
+
+.menu-icon {
+  width: 15px;
+}
+
+.myIcon{
+  margin-top: 3px;
+  margin-left: 10px;
+  color:#ddd;
+}
+
+.myIcon2{
+  margin-top: 3px;
+  margin-left: 10px;
+  color:rgb(0, 0, 0);
+}
+

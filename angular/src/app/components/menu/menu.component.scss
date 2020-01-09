@@ -1,0 +1,71 @@
+mat-toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color:rgb(51, 50, 50);
+ }
+
+ h4 {
+  font-size: 0.9em;
+  color:#FFFFFF;
+  margin-bottom: 0;
+}
+.mat-button-toggle{
+  background-color:rgb(51, 50, 50);
+  color:rgb(255, 255, 255);
+  font-size: 0.85em;
+}
+.mat-button-toggle-checked{
+  background-color: rgba(197, 192, 196, 0.315);
+  color:rgb(255, 255, 255);
+}
+
+
+
+#fullMenu {
+  display: initial;
+}
+
+#collapsedMenu {
+  display: none;
+}
+
+/* Collapse menu under 800px */
+@media screen and (max-width: 800px) {
+  #fullMenu {
+    display: none !important;
+  }
+
+  #collapsedMenu {
+    display: initial !important;
+  }
+}
+
+#fullMenu button {
+  color: #FFFFFF;
+}
+
+#left-items{
+  display: flex
+}
+
+/* Change color on hover */
+#fullMenu button:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+button {
+  font-size: 0.85em;
+}
+
+.help-container {
+  display: flex;
+}
+
+#comment {
+  font-size: 0.85em;
+  color: #FFFFFF;
+}
+
+

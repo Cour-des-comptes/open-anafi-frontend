@@ -1,0 +1,24 @@
+<div class="container" id="main-component-container">
+  <mat-form-field class="comment">
+    <textarea matInput class="commentForm" placeholder="Commentaire" #commentaire></textarea>
+  </mat-form-field>
+  <div class="buttons">
+    <button mat-raised-button (click)="submitComment(commentaire.value)">Envoyer</button>
+    <button mat-raised-button>Annuler</button>
+  </div>
+
+  <div id="comments" *ngFor="let comment of comments$ | async">
+    <mat-card class="commentCard">
+      <mat-card-header>
+        <div mat-card-avatar class="avatarPicture"></div>
+        <mat-card-title>{{comment.username}}</mat-card-title>
+        <mat-card-subtitle>Envoyé le {{comment.date | date}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{comment.comment}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

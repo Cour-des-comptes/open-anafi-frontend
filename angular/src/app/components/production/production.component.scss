@@ -1,0 +1,220 @@
+#main-component-container {
+  display: flex;
+  flex-direction:column;
+}
+
+#report-container {
+  display: flex;
+  flex-direction:row;
+  justify-content: center;
+  //margin-top: 2vh;
+}
+
+#report-container2 {
+  display: flex;
+  flex-direction:column;
+
+  width: 100%;
+  min-width: 452px;
+  margin-top: 10px;
+}
+
+
+.form-col-1 {
+    width: 500px;
+    min-width: 400px;
+    margin:20px;
+}
+
+.form-col-2 {
+    width: 500px;
+    min-width: 400px;
+    margin:20px;
+   }
+
+.control-form {
+    width: 100%;
+    margin-top: 22px;
+}
+.control-form-2 {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+
+}
+
+.control-form-3 {
+    width: 30%;
+}
+
+.chips-list {
+    width: 70%;
+    margin-left: 7px;
+  }
+
+.financialYearContainer {
+    display: flex;
+    flex-direction:column;
+    width: 100%;
+}
+
+.identifiersContainer {
+    display: flex;
+    flex-direction:row;
+    margin-top: 22px;
+}
+
+#form-container {
+    display: flex;
+    padding-top:10px;
+    flex-direction:row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+// TABLE//////////////
+
+#table-content{
+    width: 100%;
+    min-width: 452px;
+    margin-top: 10px;
+}
+table{
+    width: 100%;
+}
+
+  td.mat-cell{
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    border-bottom: 1px solid #e0e0e0;;
+    border-right: 1px solid #e0e0e0;
+    text-align: center;
+  }
+  th.mat-header-cell{
+    font-weight: bold;
+    color: black;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    border-bottom: 1px solid #e0e0e0;;
+    border-right: 1px solid #e0e0e0;
+  }
+
+  .mat-row:nth-child(even){
+    background-color: default;
+  }
+
+  .mat-row:nth-child(odd){
+    background-color:#f6f6f6;
+  }
+
+  .frameDisplay {
+      max-width: 15em;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+  }
+//////////////////////////////
+
+
+#button-container1{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top:10px;
+   }
+
+#button-container2{
+    display: flex;
+    flex-direction: row;
+   }
+
+#button_create{
+    width: 30%;
+}
+
+#button-container2 h1{
+    margin-top: auto;
+}
+
+h1{
+    font-size: 1.2em;
+}
+h4{
+    margin-left: 10px;
+    font-size: 1em;
+    color:rgb(0, 0, 0);
+}
+
+#loading{
+    margin-left: 260px;
+    font-size: 1em;
+    color:rgb(0, 0, 0);
+}
+
+//////SLIDER
+
+// We need to use ::ng-deep to overcome view encapsulation
+::ng-deep {
+    .custom-slider .ng5-slider .ng5-slider-bar {
+      background: #d8d2d2;
+      height: 2px;
+    }
+    .custom-slider .ng5-slider .ng5-slider-selection {
+      background: rgb(0, 0, 0);
+    }
+
+    .custom-slider .ng5-slider .ng5-slider-pointer {
+      width: 14px;
+      height: 18px;
+      top: auto; /* to remove the default positioning */
+      bottom: -5px;
+      background-color: #333;
+       border-top-left-radius: 3px;
+       border-top-right-radius: 3px;
+    }
+
+    .custom-slider .ng5-slider .ng5-slider-pointer:after {
+      display: none;
+    }
+
+    .custom-slider .ng5-slider .ng5-slider-bubble {
+      bottom: 14px;
+    }
+
+    .custom-slider .ng5-slider .ng5-slider-limit {
+      font-weight: bold;
+      color: rgb(255, 255, 255);
+    }
+
+    .custom-slider .ng5-slider .ng5-slider-tick {
+      width: 1px;
+      height: 10px;
+      margin-left: 5px;
+      border-radius: 0;
+      background:#d8d2d2;
+       top: -1px;
+    }
+
+    .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
+      background: rgb(0, 0, 0);
+    }
+  }
+
+
+
+
+
+/////
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+/* IE10+ CSS styles go here */
+        /deep/ .mat-select-panel, /deep/ .ng-trigger-transformPanel{
+            min-width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /deep/ .mat-option-text {
+            max-width: 486px !important;
+        }
+}

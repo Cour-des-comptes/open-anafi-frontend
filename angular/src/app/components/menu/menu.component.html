@@ -1,0 +1,28 @@
+<mat-toolbar>
+	<nav id="fullMenu">
+		<mat-button-toggle-group [(ngModel)]="routerlink">
+			<mat-button-toggle value="home" routerLink="">Accueil</mat-button-toggle>
+			<mat-button-toggle value="production" routerLink="production" >Production</mat-button-toggle>
+			<mat-button-toggle value="creation" routerLink="creation" *ngIf="admin" >Création</mat-button-toggle>
+			<mat-button-toggle value="documentation" routerLink="documentation" >Documentation</mat-button-toggle>
+		</mat-button-toggle-group>
+	</nav>
+
+
+	<nav id="collapsedMenu">
+		<button mat-button [matMenuTriggerFor]="menu" style="margin-left: -15px;">
+			<img src="assets/images/menu.svg" width="35px" alt="menu" />
+		</button>
+
+		<mat-menu #menu="matMenu" [overlapTrigger]="false">
+			<button routerLink="" mat-menu-item>Accueil</button>
+			<button routerLink="production" mat-menu-item>Production</button>
+			<button routerLink="creation" *ngIf="admin" mat-menu-item>Création</button>
+			<button routerLink="documentation" mat-menu-item>Documentation</button>
+		</mat-menu>
+	</nav>
+	<div id="left-items">
+		<user-connected></user-connected>
+	</div>
+
+</mat-toolbar>

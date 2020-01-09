@@ -1,0 +1,30 @@
+#main-component-container {
+    display: flex;
+    justify-content: center;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+}
+
+.buttonForm {
+    display: flex;
+    flex-direction:row;
+    justify-content: right;
+}
+
+#loading{
+    margin-right: 30%;
+}
+
+
+mat-card{
+    margin-top: 10vh;
+    height: 250px;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    
+}

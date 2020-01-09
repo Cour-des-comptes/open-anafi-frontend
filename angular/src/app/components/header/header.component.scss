@@ -1,0 +1,47 @@
+mat-toolbar {
+  z-index: 1;
+  position: relative;
+  background-color:rgb(51, 50, 50);
+  box-shadow: 0 1px 10px black;
+  height: 85px;
+ }
+
+ .logo-container{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+
+ }
+
+/* AppComponent's private CSS styles */
+ @media screen and (max-width: 800px) {
+  h1 {
+    display: none !important;
+  }
+  #logo {
+    width: 50px !important;
+  }
+  mat-toolbar {
+    align-items: center;
+   }
+}
+#logo {
+  width: 55px;
+  margin-right: 5px;
+}
+
+h1 {
+  font-size: 1.2em;
+  color:#FFFFFF;
+  display: initial;
+  // margin: auto;
+
+
+}
+
+
+
+
+
+

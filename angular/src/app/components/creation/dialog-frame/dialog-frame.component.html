@@ -1,0 +1,115 @@
+<form [formGroup]="FrameForm" id="form-container">
+
+  <div *ngIf="data">
+    <mat-card-title> Modifier un fichier de paramétrage</mat-card-title>
+  </div>
+  <div *ngIf="!data">
+    <mat-card-title> Créer un fichier de paramétrage</mat-card-title>
+  </div>
+
+  <mat-form-field class="control-form">
+    <input matInput placeholder="Nom de la Trame" [formControl]="frameNameControl" required>
+    <mat-error *ngIf="frameNameControl.hasError('required')"></mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="control-form">
+    <textarea matInput placeholder="Description de la Trame" [formControl]="frameDescriptionControl"
+              required></textarea>
+    <mat-error *ngIf="frameDescriptionControl.hasError('required')"></mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Nomenclature" [formControl]="nomenclatureControl">
+      <mat-option value=''></mat-option>
+      <mat-option *ngFor="let nomenclature of nomenclatures" [value]="nomenclature.id" [matTooltip]="nomenclature.name">
+        {{nomenclature.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="control-form">
+    <mat-select placeholder="Type d'établissements" [formControl]="institutionsControl" #typeInstitution value=""
+      multiple>
+      <mat-select-trigger>
+        {{institutionsControl.value ? institutionsControl.value : ''}}
+      </mat-select-trigger>
+      <mat-option value="Tous" [disabled]=" typeInstitution.value != '' && typeInstitution.value != 'Tous'">Tous
+      </mat-option>
+      <mat-option *ngFor="let institution of institutions" [value]="institution.number"
+        [disabled]="typeInstitution.value == 'Tous' " [matTooltip]="institution.name">
+        {{institution.number}} - {{institution.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="control-form">
+    <mat-select placeholder="Type d'identifiants" [formControl]="identifiersControl" multiple>
+      <mat-option *ngFor="let identifier of identifiers" [value]="identifier.name">
+        {{identifier.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="container-upload-tools">
+    <div style="display:flex">
+      <mat-form-field>
+        <input matInput id="uploadInput" placeholder="Fichier modèle" [value]="modelFileName ? modelFileName : null"
+          [formControl]="uploadedModelFileControl" disabled>
+      </mat-form-field>
+
+      <button mat-icon-button (click)="modelInput.click()" id="button_add">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <input hidden type="file" (change)="updateModelValue($event)" accept=".xlsx" #modelInput>
+    </div>
+
+    <ng-container *ngIf="!data">
+      <div style="display:flex">
+        <mat-form-field>
+          <input matInput id="uploadInput" placeholder="Fichier de paramétrage" [value]="fileName ? fileName : null"
+            [formControl]="uploadedFileControl" disabled>
+        </mat-form-field>
+
+        <button mat-icon-button (click)="fileInput.click()" id="button_add">
+          <mat-icon>add</mat-icon>
+        </button>
+
+        <input hidden type="file" (change)="updateValue($event)" accept=".xlsx" #fileInput>
+      </div>
+    </ng-container>
+  </div>
+
+  <div id="button-container1">
+    <div *ngIf="!data && !loading">
+      <button id="button_create" mat-raised-button (click)="create_submit()"
+              [disabled]="FrameForm.invalid">
+        Créer</button>
+    </div>
+
+    <div *ngIf="data && loading" class="loading">
+      <span style="margin-right:20px;">
+        <mat-spinner [diameter]="diameter"></mat-spinner>
+      </span>
+      <span style="margin-top:4px;">Modification en cours...</span>
+
+    </div>
+
+    <div *ngIf="!data && loading" class="loading">
+      <span style="margin-right:20px;">
+        <mat-spinner [diameter]="diameter"></mat-spinner>
+      </span>
+      <span style="margin-top:4px;">Création en cours...</span>
+
+    </div>
+
+    <div *ngIf="data && !loading">
+      <button id="button_create" mat-raised-button (click)="edit_submit()"
+              [disabled]="FrameForm.invalid">
+        Modifier</button>
+    </div>
+    <div *ngIf="!loading">
+      <button mat-button [mat-dialog-close]="true">Annuler</button>
+    </div>
+  </div>
+</form>

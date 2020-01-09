@@ -1,0 +1,95 @@
+<mat-card-header>
+  <mat-card-title *ngIf="!indicatorToEdit">
+    Créer un indicateur
+  </mat-card-title>
+  <mat-card-title *ngIf="indicatorToEdit">
+    Édition de l'indicateur {{indicatorToEdit.name}}
+  </mat-card-title>
+</mat-card-header>
+
+<mat-card-content>
+  <div id="creationForm">
+    <h5>Informations de l'indicateur</h5>
+    <div id="infosForm">
+      <mat-form-field>
+        <input matInput #name placeholder="Nom" [disabled]="indicatorToEdit" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput #libelle placeholder="Libellé"/>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput #description placeholder="Description"></textarea>
+      </mat-form-field>
+    </div>
+    <h5 *ngIf="indexToEdit === null && addParameter">Ajout d'un paramètre</h5>
+    <h5 *ngIf="indexToEdit !== null && !addParameter">Édition d'un paramètre</h5>
+    <form [formGroup]="parameterForm" (ngSubmit)="addOrEditParameter()" id="parameterForm" *ngIf="indexToEdit !== null || addParameter">
+      <mat-form-field>
+        <div *ngIf="error_formula.show" [ngClass]="'alert alert-warning'"> {{error_formula.error}}  </div>
+        <textarea placeholder="Formule de calcul de l’indicateur" formControlName="equation" matInput></textarea>
+      </mat-form-field>
+      <div id="lowerForm">
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Année min" formControlName="exmin" type="number" min="2009"/>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Année max" formControlName="exmax" type="number" min="2009" />
+          </mat-form-field>
+        </div>
+        <div>
+          <button *ngIf="indexToEdit === null" mat-raised-button type="submit">Ajouter</button>
+
+          <button *ngIf="indexToEdit !== null" mat-raised-button type="submit">Éditer</button>
+          <button mat-raised-button type="button" color="warn"
+            (click)="indexToEdit = null;addParameter = false;initFormCancel()">Annuler</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="parameters">
+    <div id="listOfParameters">
+      <h5>Liste des paramètres</h5>
+      <button mat-icon-button *ngIf="indexToEdit === null" matTooltip="Ajouter un paramètre" (click)="addParameter = true">
+        <mat-icon>
+          add
+        </mat-icon>
+      </button>
+    </div>
+    <mat-card *ngFor="let parameter of parameters; let i = index">
+      <mat-card-content  class="parametersDisplay">
+        <div class="parametersDisplayInfos">
+          <table>
+
+            <tr [matTooltip]="parameter.original_equation">
+              <th>Formule de calcul de l’indicateur: </th>
+              <td> {{parameter.original_equation}}</td>
+            </tr>
+            <tr>
+              <th>Année min: </th>
+              <td> {{parameter.year_min}}</td>
+            </tr>
+            <tr>
+              <th>Année max: </th>
+              <td>{{parameter.year_max}}</td>
+            </tr>
+          </table>
+        </div>
+        <div *ngIf="indexToEdit !== i">
+          <button mat-icon-button (click)="indexToEdit = i;initForm()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteParameter(i)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</mat-card-content>
+
+<mat-card-actions *ngIf="indexToEdit === null && !addParameter">
+  <button mat-raised-button type="button" (click)="createOrEditIndicator(name.value, description.value, libelle.value)">{{indicatorToEdit ? "Enregistrer les modifications" : "Créer l'indicateur"}}</button>
+  <button mat-raised-button color="warn" *ngIf="indicatorToEdit" (click)="cancelChanges()">Annuler</button>
+</mat-card-actions>

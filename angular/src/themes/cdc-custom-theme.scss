@@ -1,0 +1,9 @@
+@import './cdc-custom-palette.scss';
+
+$custom-theme-primary: mat-palette($mat-cdc-black);
+$custom-theme-accent: mat-palette($mat-cdc-grey);
+$custom-theme-warn: mat-palette($mat-cdc-pink);
+
+$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
+
+@include angular-material-theme($custom-theme);

@@ -1,0 +1,300 @@
+<div class="container-fluid" id="main-component-container">
+    <div id="form-container">
+
+    <div class="form-col-1">
+
+      <h1>Périmètre</h1>
+
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="control-form">
+        <mat-select #nomenclature_selected placeholder="Sélectionner une nomenclature"
+          [formControl]="nomenclatureControl">
+
+          <mat-option *ngFor="let nomenclature of nomenclatures$ | async " [value]="nomenclature.id">
+            {{nomenclature.name}}
+          </mat-option>
+
+        </mat-select>
+        <mat-error *ngIf="nomenclatureControl.hasError('required')"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="control-form">
+        <mat-select #trame_selected placeholder="Sélectionner une trame ou une balance" [formControl]="frameControl"
+          (selectionChange)="majFrame($event)" required>
+          <mat-option value="BALANCE">BALANCE</mat-option>
+
+          <mat-divider></mat-divider>
+
+          <mat-option *ngFor="let frame of frames$ | async |  filter : nomenclature_selected.value" [value]="frame">
+            {{frame.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="frameControl.hasError('required')"></mat-error>
+      </mat-form-field>
+
+      <div class="financialYearContainer">
+
+        <div class="control-form-2">
+          Choisir la période d'exercice:
+        </div>
+        <div class="custom-slider">
+          <ng5-slider [(value)]="financialYearMinValue" [(highValue)]="financialYearMaxValue" [options]="options">
+          </ng5-slider>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-col-2">
+
+      <h1>Paramétrage de la grille</h1>
+      <mat-divider></mat-divider>
+
+      <div style="margin-top: 15px ">
+        <mat-checkbox [(ngModel)]="agregation " (change)="agregationChange()" >paramètres d'agrégation</mat-checkbox>
+
+      </div>
+
+      <ng-container *ngIf="!agregation ">
+
+        <mat-form-field class="control-form">
+          <mat-select placeholder="Sélectionner un département" [value]="" [formControl]="departmentControl"
+            (selectionChange)="majIdentifiersList($event)" [disabled]="!trame_selected.value" required>
+            <mat-option *ngFor="let department of departments" [value]="department.number">
+              {{department.name}} ({{department.number}})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="departmentControl.hasError('required')"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="control-form">
+          <mat-select #typeInstitution placeholder="Sélectionner un établissement" value='all'
+            [disabled]="!trame_selected.value" [formControl]="institutionControl"
+            (selectionChange)="majIdentifiersList($event)">
+
+            <ng-container *ngIf="trame_selected.value && trame_selected.value == 'BALANCE'">
+              <mat-option value="all" selected>Tous</mat-option>
+              <mat-option *ngFor="let institution of institutions"
+                [matTooltip]="institution.number + ' / ' +institution.name" [value]="institution.number">
+                {{institution.number}} - {{institution.name}}
+              </mat-option>
+            </ng-container>
+
+            <ng-container *ngIf="trame_selected.value && trame_selected.value != 'BALANCE'">
+              <mat-option value="all" selected>Tous</mat-option>
+              <mat-option *ngFor="let institution of trame_selected.value.institutions_type | sort "
+                [matTooltip]="institution.number + ' / ' +institution.name" [value]="institution.number">
+                {{institution.number}} - {{institution.name}}
+              </mat-option>
+            </ng-container>
+
+          </mat-select>
+          <mat-error *ngIf="institutionControl.hasError('required')"></mat-error>
+        </mat-form-field>
+
+        <div class="identifiersContainer">
+
+          <mat-form-field class="control-form-3">
+            <mat-select [formControl]="identifiers_TypeControl" placeholder="Type identifiant"
+              [disabled]="!trame_selected.value" (selectionChange)="majIdentifiersList($event)">
+
+              <ng-container *ngIf="trame_selected.value && trame_selected.value == 'BALANCE'">
+                <mat-option *ngFor="let type of typeIdentifiers " [value]="type" required>
+                  {{type.name}}
+                </mat-option>
+              </ng-container>
+
+              <ng-container *ngIf="trame_selected.value && trame_selected.value != 'BALANCE'">
+                <mat-option *ngFor="let type of trame_selected.value.identifiers_type " [value]="type" required>
+                  {{type.name}}
+                </mat-option>
+              </ng-container>
+
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="chips-list">
+
+            <mat-chip-list #chipList
+              [disabled]="departmentControl.value == '' || institutionControl.value == '' || identifiers_TypeControl.value == '' ">
+              <mat-chip *ngFor="let identifier of identifiers" [value]="identifier" [selectable]="selectable"
+                [matTooltip]="identifier.ctype + ' / ' +identifier.lbudg + ' / '+ identifier.ident"
+                [removable]="removable" (removed)="remove(identifier)">
+                {{identifier.ident}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+
+              <div *ngIf="loading" id="loading">
+                <mat-spinner [diameter]="diameter"></mat-spinner>
+              </div>
+
+              <div *ngIf="!loading">
+                <input placeholder="Ajouter un ou plusieurs identifiants" #identifierInput
+                  [formControl]="identifierControl" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur">
+              </div>
+            </mat-chip-list>
+
+
+
+            <mat-autocomplete class="autoComplete-list" #auto="matAutocomplete" (optionSelected)="selected($event)">
+
+              <mat-option *ngFor="let identifier of filteredIdentifiers$ | async"
+                [matTooltip]="identifier.ctype + ' / ' +identifier.lbudg + ' / '+ identifier.ident"
+                [value]="identifier">
+                <span *ngIf="identifier.ctype">{{identifier.ctype}} / </span>
+                <span *ngIf="identifier.lbudg"> {{identifier.lbudg | titlecase }} / </span>
+                <span *ngIf="identifier.ident">{{identifier.ident}}</span>
+
+              </mat-option>
+
+            </mat-autocomplete>
+
+
+          </mat-form-field>
+        </div>
+
+        <div id="button-container1">
+            <button id="button_create" mat-raised-button (click)="submit()"
+                    [disabled]="identifiers.length === 0">
+            Créer le rapport</button>
+        </div>
+      </ng-container>
+
+      <!--   WITH AGREGATION -->
+      <ng-container *ngIf="agregation ">
+
+        <mat-form-field class="control-form">
+          <mat-select multiple placeholder="Sélectionner un ou plusieurs départements" [value]=""
+                      [formControl]="departmentControl" [disabled]="!trame_selected.value">
+            <mat-option  (click)="selectAllDepartments()" >Tous les départements</mat-option>
+
+            <mat-option *ngFor="let department of departments" [value]="department">
+              {{department.name}} ({{department.number}})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="departmentControl.hasError('required')"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="control-form">
+          <mat-select multiple placeholder="Sélectionner un ou plusieurs établissements" value=""
+                      [disabled]="!trame_selected.value" [formControl]="institutionControl">
+
+            <ng-container *ngIf="trame_selected.value && trame_selected.value != 'BALANCE'">
+              <mat-option *ngFor="let institution of trame_selected.value.institutions_type | sort "
+                [matTooltip]="institution.number + ' / ' +institution.name" [value]="institution">
+                {{institution.number}} - {{institution.name}}
+              </mat-option>
+            </ng-container>
+
+          </mat-select>
+          <mat-error *ngIf="institutionControl.hasError('required')"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Population Min" type="number" [formControl]="populationMinControl">
+
+        </mat-form-field>
+
+        <mat-form-field style="margin-left:10px">
+          <input matInput placeholder="Population Max" type="number" [formControl]="populationMaxControl">
+
+        </mat-form-field>
+
+        <div id="button-container1">
+          <button [disabled]="departmentControl.value.length === 0 || institutionControl.value.length === 0"
+                  id="button_create" mat-raised-button (click)="submit2()">
+            Créer le rapport</button>
+        </div>
+
+      </ng-container>
+
+
+    </div>
+  </div>
+
+  <div class="container" id="report-container">
+    <div id="report-container2">
+      <div id="button-container2">
+        <h1>Historique des rapports générés</h1>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="mat-elevation-z8" id="table-content">
+        <table mat-table [dataSource]="dataSource" matSort matSortDirection="desc" matSortActive="id">
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro</th>
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>État du rapport</th>
+
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.state == 'PENDING'">
+
+                <div>
+                  <mat-spinner style="margin: 0 auto;" [diameter]="loading_diameter"></mat-spinner>
+
+                  <span> En cours...</span>
+                </div>
+              </div>
+              <span *ngIf="element.state == 'DONE'"> Terminé</span>
+              <span *ngIf="element.state == 'FAILED'"> Échec</span>
+              <span *ngIf="element.state == 'EMPTY'"> Vide</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="frame">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Trame</th>
+            <td mat-cell *matCellDef="let element" class="frameDisplay">
+              <span *ngIf="(element.frame || element.frame_name); else elseBlock"
+                [matTooltip]="getFrameName(element)">{{getFrameName(element)}}</span>
+               <ng-template #elseBlock>Balance</ng-template>
+            </td>
+
+          </ng-container>
+
+          <ng-container matColumnDef="identifier">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Identifiant</th>
+            <ng-container ></ng-container>
+
+            <td mat-cell *matCellDef="let element">
+
+              <span *ngIf="elementCount(element.identifier) > 4">
+                   {{element.identifier_type}}: {{elementCount(element.identifier)}} éléments
+              </span>
+              <span *ngIf="elementCount(element.identifier) <= 4"> {{element.identifier_type}}: {{element.identifier}}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="exercice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Période d'exercice</th>
+            <td mat-cell *matCellDef="let element">{{element.year_min}} - {{element.year_max}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date de création</th>
+            <td mat-cell *matCellDef="let element">{{element.date | date}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="download">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Téléchargement</th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button [disabled]="element.state!= 'DONE'" (click)="downloadReport(element.id)">
+                <mat-icon>get_app</mat-icon>
+              </button></td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 50]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

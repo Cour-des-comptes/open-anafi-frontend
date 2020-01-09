@@ -1,0 +1,30 @@
+#main-component-container {
+    display: flex;
+    flex-direction:column;
+    //justify-content: center;
+    // min-height: 78vh;
+     min-width: 600px;
+     width: 600px;
+}
+
+.buttons {
+  text-align: right;
+  margin: 0 0 10vh;
+}
+.comment {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.buttons button {
+    margin-left: 0.4vw;
+}
+
+.avatarPicture {
+    background-image: url('https://source.unsplash.com/random');
+    background-size: cover;
+}
+
+.commentCard {
+    margin-bottom: 1vh;
+}

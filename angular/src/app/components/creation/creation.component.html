@@ -1,0 +1,442 @@
+<div *ngIf="loading_screen" id="loadingScreen">
+  <div style="margin-top: 50vh;">
+    <mat-spinner style="margin:auto;" diameter="150"></mat-spinner>
+
+
+
+    <h5 style="margin-top: 2em;">Chargement des données ...</h5>
+  </div>
+</div>
+
+<div [@.disabled]="true" class="container-fluid" id="main-component-container">
+
+  <mat-tab-group id="mainGroup" (selectedTabChange)="tabChange()" [(selectedIndex)]="selectedIndex">
+
+
+    <!-- NOMENCLATURES -->
+
+    <mat-tab label="Nomenclatures">
+      <div id="nomenclatures">
+
+        <!-- Filter panel-->
+
+        <div class="left-column">
+          <mat-card class="nomenclatures-filter-card">
+
+            <mat-form-field class="filter">
+              <input matInput placeholder="Recherche" (keyup)="filterNomenclatures(nomenclatureFilter.value)"
+                #nomenclatureFilter>
+            </mat-form-field>
+
+            <div class="labels">
+              <span><button mat-icon-button (click)="openDialogNomenclature('create')" disableRipple="true">
+                  <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 25px;">add</mat-icon>
+                </button></span>
+
+            </div>
+
+            <!-- Left panel-->
+            <perfect-scrollbar style="max-width: 600px; max-height: 1000px;">
+
+              <mat-card-content>
+                <mat-selection-list (selectionChange)="NomenclatureChange($event)">
+                  <mat-list-option *ngFor="let nomenclature of nomenclatures ; index as i" [value]="nomenclature">
+                    <div class="nomenclature-row">
+                      {{nomenclature.name}}
+                    </div>
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-card-content>
+
+            </perfect-scrollbar>
+          </mat-card>
+        </div>
+
+        <!-- Right panel-->
+        <div class="right-column ">
+          <mat-card class="nomenclatures-body-card">
+
+            <div class="nomenclature-row2" *ngIf="selectedNomenclature">
+              <button mat-icon-button (click)="openDialogNomenclature('edit', selectedNomenclature.id)"
+                disableRipple="true">
+                <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="delete_Nomenclature(selectedNomenclature.id,selectedNomenclature.name )" disableRipple="true">
+                <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">delete_forever</mat-icon>
+              </button>
+            </div>
+            <mat-card-header *ngIf="selectedNomenclature">
+              <mat-card-title>
+
+                Nomenclature: {{selectedNomenclature.name}}
+
+              </mat-card-title>
+              <mat-card-subtitle>
+                Description: {{selectedNomenclature.description}}
+                <div style="margin-top:2%">
+                  <mat-divider></mat-divider>
+                </div>
+
+              </mat-card-subtitle>
+
+            </mat-card-header>
+
+            <mat-card-content *ngIf="selectedNomenclature">
+
+
+              <h6>Trames concernées par la nomenclature</h6>
+
+              <div>
+                <button mat-raised-button *ngFor="let nomenclature_frame of nomenclature_frames"
+                  (click)="selectFrame(nomenclature_frame.id)">
+                  {{nomenclature_frame.name}}
+                </button>
+              </div>
+
+            </mat-card-content>
+
+          </mat-card>
+        </div>
+      </div>
+
+    </mat-tab>
+
+    <!--FRAMES-->
+
+    <mat-tab label="Trames">
+
+      <div id="trames">
+
+        <!-- Filter panel-->
+
+        <div class="left-column">
+          <mat-card class="trames-filter-card">
+
+            <mat-form-field class="filter">
+              <input matInput placeholder="Recherche" (keyup)="filterFrames(frameFilter.value)" #frameFilter>
+            </mat-form-field>
+
+            <div class="labels">
+              <span><button mat-icon-button (click)="openDialogFrame('create')" disableRipple="true">
+                  <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 25px;">add</mat-icon>
+                </button></span>
+
+            </div>
+
+            <!-- Left panel-->
+            <perfect-scrollbar>
+
+              <mat-card-content>
+                <mat-selection-list (selectionChange)="FrameChange($event)">
+                  <mat-list-option *ngFor="let frame of frames ; index as i" [value]="frame">
+                    <div class="nomenclature-row">
+                      {{frame.name}}
+                    </div>
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-card-content>
+
+            </perfect-scrollbar>
+          </mat-card>
+        </div>
+
+        <!-- Right panel-->
+        <div class="right-column ">
+          <mat-card class="trames-body-card">
+            <div class="nomenclature-row2" *ngIf="selectedFrame">
+              <button mat-icon-button (click)="export_Frame(selectedFrame.id)" disableRipple="true">
+                <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">cloud_download</mat-icon>
+              </button>
+              <button mat-icon-button (click)="openDialogFrame('edit', selectedFrame.id)" disableRipple="true">
+                <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="delete_Frame(selectedFrame.id, selectedFrame.name)" disableRipple="true">
+                <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">delete_forever</mat-icon>
+              </button>
+            </div>
+
+            <mat-card-header *ngIf="selectedFrame">
+              <mat-card-title>
+
+                Trame: {{selectedFrame.name}}
+
+              </mat-card-title>
+              <mat-card-subtitle>
+                Description: {{selectedFrame.description}}
+
+
+              </mat-card-subtitle>
+
+
+            </mat-card-header>
+
+            <mat-card-content style="display:flex;" *ngIf="selectedFrame">
+
+              <!-- Left panel-->
+
+              <div class="frame-indicator-detail">
+                <div class="frame-detail-indicator-column">
+
+                  <span style="margin: 10px; font-weight: bold;">Indicateurs associés à la trame
+                    {{selectedFrame.name}}</span>
+                  <mat-divider [inset]="true"></mat-divider>
+                  <mat-form-field class="filter">
+                    <input matInput placeholder="Recherche" (keyup)="filterFramesIndicator(indicatorFrameFilter.value)"
+                      #indicatorFrameFilter>
+                  </mat-form-field>
+
+                  <div class="labels">
+                    <span><button mat-icon-button (click)="openFrameIndicator()" disableRipple="true">
+                        <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 25px;">add</mat-icon>
+                      </button></span>
+
+                  </div>
+
+                  <div *ngIf="loading" id="loading">
+                    <mat-spinner [diameter]="diameter"></mat-spinner>
+                  </div>
+
+
+                  <perfect-scrollbar>
+                    <div *ngIf="!loading">
+                      <mat-selection-list (selectionChange)="FrameIndicatorChange($event)">
+                        <mat-list-option *ngFor="let frame_indicator of frame_indicators" [value]="frame_indicator" [matTooltip]="makeTooltip(frame_indicator)">
+                          <div class="nomenclature-row">
+                            <b>{{frame_indicator.name}}</b>
+                          </div>
+                          <div *ngIf="frame_indicator.libelles[0]" class="nomenclature-row" >{{frame_indicator.libelles[0].libelle}}</div>
+                        </mat-list-option>
+
+                      </mat-selection-list>
+                    </div>
+                  </perfect-scrollbar>
+
+
+                </div>
+
+                <!-- RIGHT PANEL -->
+
+                <div class="frame-detail-indicator-column-right">
+
+
+
+                  <div style="display:flex; flex-direction: row; justify-content: flex-end;"
+                    *ngIf="selected_frame_indicator">
+                    <button mat-icon-button (click)="selectFrameIndicator(selected_frame_indicator.id)"
+                      disableRipple="true">
+                      <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                      (click)="delete_Frame_Indicator(selected_frame_indicator.id,selectedFrame.id)"
+                      disableRipple="true">
+                      <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">delete_forever</mat-icon>
+                    </button>
+                  </div>
+                  <perfect-scrollbar>
+                    <div style="margin-top: 3%; margin-left: 2%; display: flex; flex-direction: column; "
+                      *ngIf="selected_frame_indicator">
+                      <span style=" font-weight: bold;">Nom de l'indicateur:</span>
+                      <span style="margin: 3%;">{{selected_frame_indicator.name}}</span>
+                      <span style="font-weight: bold;">Libellé:</span>
+                      <span *ngIf="selected_frame_indicator.libelles[0]"
+                        style="margin: 3%;">{{selected_frame_indicator.libelles[0].libelle}}</span>
+                      <span style="font-weight: bold;">Description:</span>
+                      <span style="margin: 3%;">{{selected_frame_indicator.description}}</span>
+
+                      <div style="display: flex; flex-direction: column;"
+                        *ngFor="let frame_indicator_parameter of selected_frame_indicator.parameters">
+                        <span style=" font-weight: bold;">Formule de calcul de l’indicateur:</span>
+                        <span style="margin: 3%;">{{frame_indicator_parameter.original_equation}}</span>
+                        <span style="font-weight: bold;">Année_min:</span>
+                        <span style="margin: 3%;">{{frame_indicator_parameter.year_min}}</span>
+                        <span style="font-weight: bold;">Année_max:</span>
+                        <span style="margin: 3%;">{{frame_indicator_parameter.year_max}}</span>
+
+                      </div>
+                    </div>
+
+                  </perfect-scrollbar>
+
+                </div>
+
+              </div>
+
+              <div class="frame-detail">
+
+                <div id="frame-detail-column-etab">
+
+                  <span style="margin: 10px; font-weight: bold;">Type d'établissements:
+                  </span>
+
+                  <mat-divider [inset]="true"></mat-divider>
+
+                  <perfect-scrollbar style="max-height: 1000px;">
+                    <mat-list>
+
+                      <mat-list-item *ngFor="let institution of selectedFrame.institutions_type">
+                        <span style="font-size: 0.8em">{{institution.number}} - {{institution.name}}</span>
+                      </mat-list-item>
+                    </mat-list>
+                  </perfect-scrollbar>
+
+
+
+                </div>
+                <div class="frame-detail-column">
+
+                  <span style="margin: 10px; font-weight: bold;">Type d'identifiants: </span>
+                  <mat-divider [inset]="true"></mat-divider>
+                  <perfect-scrollbar style="max-height: 1000px;">
+                    <mat-list>
+                      <mat-list-item *ngFor="let identifier of selectedFrame.identifiers_type">
+
+                        <span style="font-size: 0.8em; margin-top: 10px;">{{identifier.name}}</span>
+
+
+                      </mat-list-item>
+                    </mat-list>
+                  </perfect-scrollbar>
+
+                </div>
+
+                <div class="frame-detail-column">
+
+
+                  <span style="margin: 10px; font-weight: bold;">Modèle associé: </span>
+                  <mat-divider [inset]="true"></mat-divider>
+                  <span style="margin:10px;">{{selectedFrame.model_name}}</span>
+                  <mat-divider [inset]="true"></mat-divider>
+                  <span style="margin: 10px; font-weight: bold;">Nomenclature associé: </span>
+                  <mat-divider [inset]="true"></mat-divider>
+                  <span style="margin:10px;">{{frame_nomenclature_name}}</span>
+
+                </div>
+              </div>
+
+
+
+            </mat-card-content>
+
+          </mat-card>
+        </div>
+      </div>
+
+    </mat-tab>
+
+    <!-- INDICATORS -->
+
+    <mat-tab label="Indicateurs">
+
+      <div id="indicators">
+
+        <!-- Filter panel-->
+
+        <div class="left-column" style="width : 40%">
+          <mat-card class="indicators-filter-card">
+
+            <mat-form-field class="filter">
+              <input matInput placeholder="Recherche" (keyup)="filterIndicators(indicatorFilter.value)"
+                #indicatorFilter>
+            </mat-form-field>
+
+            <div class="labels">
+              <span><button mat-icon-button (click)="indicatorToEdit = null;selectedIndicator = null"
+                  disableRipple="true">
+                  <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 25px;">add</mat-icon>
+                </button></span>
+
+            </div>
+
+            <!-- Left panel-->
+
+
+            <perfect-scrollbar >
+
+              <mat-card-content>
+                <mat-selection-list (selectionChange)="IndicatorChange($event)">
+
+                  <div *ngIf="indicators && indicators.length === 0">
+                    <p class="no-result-text">Aucune donnée</p>
+                  </div>
+
+                  <mat-list-option *ngFor="let indicator of indicators ; index as i" [value]="indicator" [matTooltip]="makeTooltip(indicator)">
+                    <div class="nomenclature-row">
+                      <b>{{indicator.name}}</b>
+                    </div>
+                    <div *ngIf="indicator.libelles[0]" class="nomenclature-row" >{{indicator.libelles[0].libelle}}</div>
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-card-content>
+
+            </perfect-scrollbar>
+          </mat-card>
+        </div>
+
+        <!-- Right panel-->
+        <div class="right-column ">
+          <mat-card class="indicators-body-card">
+            <div class="nomenclature-row2" *ngIf="selectedIndicator && !indicatorToEdit">
+
+              <button mat-icon-button (click)="beginEdit(selectedIndicator)" disableRipple="true">
+                <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="delete_Indicator(selectedIndicator.id)" disableRipple="true">
+                <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">delete_forever</mat-icon>
+              </button>
+            </div>
+
+            <mat-card-header *ngIf="selectedIndicator && !indicatorToEdit">
+              <mat-card-title>
+
+                Indicateur: {{selectedIndicator.name}}
+
+              </mat-card-title>
+
+              <mat-card-subtitle>
+                  Libellé: <span *ngIf="selectedIndicator.libelles[0]">{{selectedIndicator.libelles[0].libelle}}</span>
+
+
+              </mat-card-subtitle>
+              <mat-card-subtitle>
+                Description: {{selectedIndicator.description}}
+
+
+              </mat-card-subtitle>
+
+
+            </mat-card-header>
+
+            <mat-card-content *ngIf="selectedIndicator && !indicatorToEdit">
+
+              <div class="indicator-detail">
+                <div style="display: flex; flex-direction: column;"
+                  *ngFor="let indicator_parameter of selectedIndicator.parameters">
+                  <span style=" font-weight: bold;">Formule de calcul de l’indicateur:</span>
+                  <span style="margin: 3%;"> {{indicator_parameter.original_equation}}</span>
+                  <span style="font-weight: bold;">Année_min: </span>
+                  <span style="margin: 3%;"> {{indicator_parameter.year_min}}</span>
+                  <span style="font-weight: bold;">Année_max: </span>
+                  <span style="margin: 3%;"> {{indicator_parameter.year_max}}</span>
+
+                </div>
+
+              </div>
+
+            </mat-card-content>
+
+            <app-indicator-creation id="appIndicatorCreation" *ngIf="!indicatorToEdit && !selectedIndicator"
+              (emitter)="indicatorAddedOrEdited($event)"></app-indicator-creation>
+            <app-indicator-creation id="appIndicatorCreation2" *ngIf="indicatorToEdit"
+              [indicatorToEdit]="indicatorToEdit" (emitter)="indicatorAddedOrEdited($event)"
+              (closeEmitter)="indicatorToEdit = null"></app-indicator-creation>
+
+          </mat-card>
+        </div>
+      </div>
+
+
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>

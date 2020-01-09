@@ -1,0 +1,44 @@
+#main-component-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction:column;
+}
+
+#content{
+    width: 100%;
+    margin: 20px;
+}
+
+
+#video_player{
+    margin-top: 15px;
+}
+
+.reportCard{
+    width: 80%;
+}
+
+#video-reportCard{
+    width: 80%;
+}
+
+.card-container{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction:row;
+}
+
+.videogular-container{
+    margin-top: 15px;
+	overflow: hidden;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS styles go here */
+    #video-reportCard{
+        width: 80%;
+        height:615px;
+    }
+    }

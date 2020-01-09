@@ -1,0 +1,325 @@
+<div [@.disabled]="true" class="container-fluid" id="main-component-container">
+
+
+  <mat-tab-group id="mainGroup" [(selectedIndex)]="selectedIndex">
+    <mat-tab label="Nomenclatures">
+
+      <div class="labels">
+        <span>Filtres :</span>
+        <mat-chip-list>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="nomenclatureChip" (removed)="remove(0)"
+            (click)="select(0)">
+            {{nomenclatureChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+          <mat-icon *ngIf="frameChip && nomenclatureChip">keyboard_arrow_right</mat-icon>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="frameChip" (removed)="remove(1)"
+            (click)="select(1)">
+            {{frameChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+          <mat-icon *ngIf="indicatorChip && (nomenclatureChip || frameChip)">keyboard_arrow_right</mat-icon>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="indicatorChip" (removed)="remove(2)"
+            (click)="select(2)">
+            {{indicatorChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+        </mat-chip-list>
+      </div>
+
+      <div id="nomenclatures">
+
+        <!-- Filter panel-->
+
+        <div class="left-column">
+          <mat-card class="nomenclatures-filter-card">
+
+            <mat-form-field class="filter">
+              <input matInput placeholder="Recherche" (keyup)="filterNomenclatures(nomenclatureFilter.value)"
+                #nomenclatureFilter>
+            </mat-form-field>
+
+            <!-- Left panel-->
+            <perfect-scrollbar style="max-width: 600px; max-height: 1000px;">
+
+              <mat-card-content>
+                <mat-selection-list (selectionChange)="handleNomenclatureChange($event)" #nomenclatureList>
+                  <mat-list-option *ngFor="let nomenclature of nomenclatures" [value]="nomenclature">
+                    {{nomenclature.name}}
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-card-content>
+
+            </perfect-scrollbar>
+          </mat-card>
+        </div>
+
+        <!-- Right panel-->
+        <div class="right-column ">
+          <mat-card class="nomenclatures-body-card">
+            <mat-card-header *ngIf="selectedNomenclature">
+              <mat-card-title>
+                <h3>{{selectedNomenclature.description}}</h3>
+                <mat-divider></mat-divider>
+              </mat-card-title>
+
+            </mat-card-header>
+
+
+            <perfect-scrollbar style=" max-height: 1000px;">
+              <mat-card-content *ngIf="selectedNomenclature">
+
+                <div>
+
+                </div>
+
+              </mat-card-content>
+            </perfect-scrollbar>
+          </mat-card>
+        </div>
+
+      </div>
+    </mat-tab>
+
+    <!-- Frames tab-->
+    <mat-tab label="Trames">
+
+      <div class="labels">
+        <span>Filtres :</span>
+        <mat-chip-list>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="nomenclatureChip" (removed)="remove(0)"
+            (click)="select(0)">
+            {{nomenclatureChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+          <mat-icon *ngIf="frameChip && nomenclatureChip">keyboard_arrow_right</mat-icon>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="frameChip" (removed)="remove(1)"
+            (click)="select(1)">
+            {{frameChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+          <mat-icon *ngIf="indicatorChip && (nomenclatureChip || frameChip)">keyboard_arrow_right</mat-icon>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="indicatorChip" (removed)="remove(2)"
+            (click)="select(2)">
+            {{indicatorChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+        </mat-chip-list>
+      </div>
+
+      <div id="trames">
+
+        <!-- Filter panel-->
+
+        <div class="left-column">
+          <mat-card class="trames-filter-card">
+
+            <mat-form-field class="filter">
+              <input matInput placeholder="Recherche" (keyup)="filterFrames(frameFilter.value)" #frameFilter>
+            </mat-form-field>
+
+            <!-- Left panel-->
+            <perfect-scrollbar style="max-width: 600px; max-height: 1000px;">
+
+              <mat-card-content>
+                <mat-selection-list (selectionChange)="handleFrameChange($event)" #frameList>
+                  <mat-list-option *ngFor="let frame of frames" [value]="frame">
+                    {{frame.name}}
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-card-content>
+            </perfect-scrollbar>
+          </mat-card>
+
+        </div>
+
+        <!-- Right panel-->
+        <div class="right-column">
+          <mat-card class="trames-body-card">
+            <mat-card-header *ngIf="selectedFrame">
+              <mat-card-title>
+                <h3>{{selectedFrame.description}}</h3>
+                <button mat-icon-button (click)="exportFrame(selectedFrame.id)" disableRipple="true">
+                  <mat-icon style="color: rgba(119, 116, 116, 0.781);font-size: 20px;">cloud_download</mat-icon>
+                </button>
+                <mat-divider></mat-divider>
+              </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content *ngIf="selectedFrame">
+              <div>
+                <mat-divider></mat-divider>
+              </div>
+
+
+              <div style="margin-left:3%;margin-top: 5%;">
+                <h5>Indicateurs concernés :</h5>
+              </div>
+
+              <perfect-scrollbar style=" max-height: 1000px;">
+                <div style="margin-left:3%;max-height: 200px;width: 100%;">
+                  <button mat-button *ngFor="let indicator of indicators" (click)="selectIndicator(indicator.id)">
+                    {{indicator.name}}
+                  </button>
+                </div>
+              </perfect-scrollbar>
+
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+      </div>
+
+      <div *ngIf="selectedFrame">
+        <app-comment type="frame" [id]="selectedFrame.id"></app-comment>
+      </div>
+
+    </mat-tab>
+
+    <!-- indicators tab -->
+    <mat-tab label="Indicateurs">
+
+      <div class="labels">
+        <span>Filtres :</span>
+        <mat-chip-list>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="nomenclatureChip" (removed)="remove(0)"
+            (click)="select(0)">
+            {{nomenclatureChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+          <mat-icon *ngIf="frameChip && nomenclatureChip">keyboard_arrow_right</mat-icon>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="frameChip" (removed)="remove(1)"
+            (click)="select(1)">
+            {{frameChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+          <mat-icon *ngIf="indicatorChip && (nomenclatureChip || frameChip)">keyboard_arrow_right</mat-icon>
+
+          <mat-chip [removable]="removable" [selectable]="selectable" *ngIf="indicatorChip" (removed)="remove(2)"
+            (click)="select(2)">
+            {{indicatorChip}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+
+        </mat-chip-list>
+      </div>
+
+      <div id="indicators">
+
+        <!-- Filter panel-->
+
+        <div class="left-column" style="width: 40%">
+          <mat-card class="indicators-filter-card">
+
+            <mat-form-field class="filter">
+              <input matInput placeholder="Recherche" (keyup)="filterIndicators(indicatorFilter.value)"
+                #indicatorFilter>
+            </mat-form-field>
+
+
+
+            <!-- Left panel-->
+            <perfect-scrollbar style="max-width: 600px; max-height: 1000px;">
+
+              <mat-card-content>
+                <mat-selection-list (selectionChange)="handleIndicatorChange($event)" #indicatorList>
+
+                  <div *ngIf="indicators && indicators.length === 0">
+                    <p class="no-result-text">Aucune donnée</p>
+                  </div>
+
+                  <mat-list-option *ngFor="let indicator of indicators " [value]="indicator" [matTooltip]="indicator.libelles[0] ? indicator.name + ' - ' + indicator.libelles[0].libelle : indicator.name">
+                    <div class="nomenclature-row">
+                      <b>{{indicator.name}}</b>
+                    </div>
+                    <div *ngIf="indicator.libelles[0]" class="nomenclature-row" >{{indicator.libelles[0].libelle}}</div>
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-card-content>
+            </perfect-scrollbar>
+          </mat-card>
+
+        </div>
+
+        <!-- Right panel-->
+        <div class="right-column">
+          <mat-card class="indicators-body-card">
+            <mat-card-header *ngIf="selectedIndicator">
+              <mat-card-title>
+                <h3>Détail de l'indicateur {{selectedIndicator.name}}</h3>
+                <mat-divider></mat-divider>
+              </mat-card-title>
+            </mat-card-header>
+
+
+            <mat-card-content *ngIf="selectedIndicator">
+              <div class="description">
+                Libellé :  <a *ngIf="selectedIndicator.libelles[0]">{{selectedIndicator.libelles[0].libelle}}</a>
+              </div>
+              <div class="description">
+                Description : {{selectedIndicator.description}}
+              </div>
+              <div>
+                <mat-divider></mat-divider>
+              </div>
+
+              <div class="parameterAndButton">
+
+                <mat-select [(value)]="selectedParameter" *ngIf="parameters.length > 1"
+                  (selectionChange)="handleParameterChange()">
+                  <mat-option *ngFor="let parameter of parameters; index as i" [value]="i">
+                    Exmin: {{parameter.year_min}} / Exmax: {{parameter.year_max}}
+                  </mat-option>
+                </mat-select>
+
+                <h6 *ngIf="parameters[selectedParameter].year_min">
+                  Exmin : {{parameters[selectedParameter].year_min}}
+                </h6>
+                <h6 *ngIf="parameters[selectedParameter].year_max">
+                  Exmax : {{parameters[selectedParameter].year_max}}
+                </h6>
+              </div>
+
+              <mat-tab-group>
+                <mat-tab label="Equation">
+                  <div class="equation-tab">
+                    <span class="equation">{{parameters[selectedParameter].original_equation}}</span>
+                  </div>
+                </mat-tab>
+                <mat-tab label="Graphique">
+                  <div id="svgGraph">
+                    <perfect-scrollbar style=" max-height: 440px;">
+                      <img [src]="currentGraphURL" alt="svg Graph modelisation" />
+                    </perfect-scrollbar>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div *ngIf="selectedIndicator">
+        <app-comment type="indicator" [id]="selectedIndicator.id"></app-comment>
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>
+</div>

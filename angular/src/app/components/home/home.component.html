@@ -1,0 +1,32 @@
+<div class="container" id="main-component-container">
+    <div id="content">
+        <h1>Bienvenue dans OpenAnafi!</h1>
+
+    </div>
+
+
+
+    <div class="card-container">
+        <mat-card id="video-reportCard">
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Tutoriel OpenAnafi</h3>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="videogular-container">
+                    <vg-player id="video_player">
+                        <video [vgMedia]="media" #media id="singleVideo" preload="auto" controls>
+                            <source src="assets/videos/Tutoriel OpenAnafi V1.mp4" type="video/mp4">
+                        </video>
+                    </vg-player>
+                </div>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+
+
+    <app-comment type="app"></app-comment>
+
+</div>

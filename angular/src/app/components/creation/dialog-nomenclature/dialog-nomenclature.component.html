@@ -1,0 +1,49 @@
+<form [formGroup]="NomenclatureForm" id="form-container">
+    <div *ngIf="data">
+      <mat-card-title> Modifier une Nomenclature</mat-card-title>
+    </div>
+    <div *ngIf="!data">
+      <mat-card-title> Créer une Nomenclature</mat-card-title>
+    </div>
+
+    <mat-form-field class="control-form">
+      <input matInput placeholder="Nom de la Nomenclature" [formControl]="Nomenclature_Name_Control" required>
+      <mat-error *ngIf="Nomenclature_Name_Control.hasError('required')"></mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="control-form">
+      <textarea matInput placeholder="Description de la Nomenclature" [formControl]="Nomenclature_Description_Control"
+                required></textarea>
+      <mat-error *ngIf="Nomenclature_Description_Control.hasError('required')"></mat-error>
+    </mat-form-field>
+
+
+    <div id="button-container1">
+
+      <div *ngIf="!data && !loading">
+        <button id="button_create" [mat-dialog-close]="done" mat-raised-button (click)="create_submit()"
+                [disabled]="NomenclatureForm.invalid">
+          Créer</button>
+      </div>
+
+      <div *ngIf="data && loading" class="loading" >
+        <mat-spinner [diameter]="diameter"></mat-spinner>
+        Modification en cours...
+      </div>
+
+      <div *ngIf="!data && loading" class="loading">
+        <mat-spinner [diameter]="diameter"></mat-spinner>
+        Création en cours...
+      </div>
+
+
+      <div *ngIf="data && !loading">
+        <button id="button_create" [mat-dialog-close]="done" mat-raised-button (click)="edit_submit()"
+                [disabled]="NomenclatureForm.invalid">
+          Modifier</button>
+      </div>
+      <div *ngIf=" !loading">
+        <button mat-button [mat-dialog-close]="true">Annuler</button>
+      </div>
+    </div>
+  </form>

@@ -1,0 +1,20 @@
+@import '../node_modules/@angular/material/theming';
+@include mat-core();
+@import 'themes/cdc-custom-theme.scss';
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/bootstrap-grid';
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '~ngx-toastr/toastr';
+
+* {
+  font-family: "FS Elliot",Helvetica,Arial,sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  &:focus {
+    outline: none;
+    border: 0;
+  }
+}
